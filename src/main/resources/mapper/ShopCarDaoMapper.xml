@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.computer.dao.ShoppingCarDao">
+    <sql id="shoppingCarAllColumns">
+        id,user_id,goods_id,goods_num,update_time,create_time,delete_status
+    </sql>
+    
+    <insert id="saveShoppingCar">
+        insert into shoppingcar (user_id,goods_id,goods_num,update_time,create_time)
+        values (#{userId},#{goodsId},#{goodsNum},#{updateTime},#{createTime})
+    </insert>
+
+    <select id="listShoppingCarsByUserId" resultType="com.computer.bean.ShoppingCar">
+        select <include refid="shoppingCarAllColumns"/>
+        from shoppingcar
+        where user_id = #{userId}
+    </select>
+
+    <select id="getShoppingCarByUserIdAndGoodsId" resultType="com.computer.bean.ShoppingCar">
+        select <include refid="shoppingCarAllColumns"/>
+        from shoppingcar
+        where user_id = #{userId} and goods_id = #{goodsId}
+    </select>
+
+    <update id="updateGoodsNum">
+        update shoppingcar set goods_num = #{goodsNum}
+        where user_id = #{userId} and goods_id = #{goodsId}
+    </update>
+
+    <select id="listGoodsLinkGoodsWithShoppingCar" resultType="com.computer.bean.ShoppingCarWithGoods">
+        select shoppingcar.id,shoppingcar.user_id,shoppingcar.goods_id,shoppingcar.goods_num,shoppingcar.update_time,shoppingcar.create_time,shoppingcar.delete_status,
+               goods.goods_name,goods.goods_price,goods.goods_photo,goods.goods_amount,goods.goods_details,goods.goods_type,goods.goods_address,goods.goods_saleNum
+        FROM shoppingcar,goods
+        WHERE shoppingcar.goods_id = goods.id and shoppingcar.user_id = #{userId}
+    </select>
+    
+    <update id="updateShoppingCarBuyNum">
+        update shoppingcar set goods_num = #{goodsNum}
+        where id = #{id}
+    </update>
+    <delete id="deleteShoppingCarByCarId">
+        delete from shoppingcar where id = #{carId}
+    </delete>
+    <select id="getGoodsLinkGoodsWithShoppingCarBycarId" resultType="com.computer.bean.ShoppingCarWithGoods">
+        select shoppingcar.id,shoppingcar.user_id,shoppingcar.goods_id,shoppingcar.goods_num,shoppingcar.update_time,shoppingcar.create_time,shoppingcar.delete_status,
+               goods.goods_name,goods.goods_price,goods.goods_photo,goods.goods_amount,goods.goods_details,goods.goods_type,goods.goods_address,goods.goods_saleNum
+        FROM shoppingcar,goods
+        WHERE shoppingcar.goods_id = goods.id and shoppingcar.id = #{id}
+    </select>
+    <select id="getShoppingCarByCarId" resultType="com.computer.bean.ShoppingCar">
+        select <include refid="shoppingCarAllColumns"/>
+        from  shoppingcar
+        where id = #{carId}
+    </select>
+</mapper>

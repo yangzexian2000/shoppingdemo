@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.computer.dao.UserDao">
+    <sql id="UserAllColumns">
+        user_id,user_name,user_pwd,user_phone,user_email,user_photo,user_money,user_warning,create_time,update_time,delete_status,user_sex,user_type,user_points
+    </sql>
+    <select id="listUsers" resultType="com.computer.bean.User">
+        select <include refid="UserAllColumns"/>
+        from user
+        <where>
+            <if test="userPhone != null">
+                and  user_phone = #{userPhone}
+            </if>
+            <if test="userEmail != null">
+                and user_email = #{userEmail}
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="saveUser">
+        insert into user (user_name,user_pwd,user_phone,user_email,create_time,update_time)
+        values (#{userName},#{userPwd},#{userPhone},#{userEmail},#{createTime},#{updateTime})
+    </insert>
+
+    <update id="updetaUserPwd">
+        update user set user_pwd = #{userPwd} ,update_time= #{updateTime}  where user_phone = #{userPhone}
+    </update>
+
+    <update id="updetaUserEmaliOrPhone">
+        update user set user_phone = #{userPhone},user_email = #{userEmail},update_time= #{updateTime},user_name = #{userName},user_sex = #{userSex}
+        where user_id = #{userId}
+    </update>
+
+    <update id="updateUserPhoto" >
+        update user set user_photo = #{userPhoto} ,update_time = #{updateTime}
+        where user_id = #{userId}
+    </update>
+
+    <select id="getUserByUserId" resultType="com.computer.bean.User">
+        select <include refid="UserAllColumns"/>
+        from user
+        where user_id = #{userId}
+    </select>
+
+</mapper>

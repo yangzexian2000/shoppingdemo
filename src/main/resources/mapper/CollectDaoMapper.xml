@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.computer.dao.CollectDao">
+    <sql id="collectAllColumns">
+        id,user_id,good_id,update_time,create_time,delete_status
+    </sql>
+
+    <insert id="saveCollect">
+        insert into collect(user_id,good_id,update_time,create_time)
+        values (#{userId},#{goodId},#{updateTime},#{createTime})
+    </insert>
+
+    <select id="getCollect" resultType="com.computer.bean.Collect">
+        select <include refid="collectAllColumns"/>
+        from collect
+        where user_id = #{userId} and good_id = #{goodId}
+    </select>
+
+    <select id="ListUserCollects" resultType="com.computer.bean.Collect">
+        select <include refid="collectAllColumns"/>
+        from collect
+        where user_id = #{userId}
+    </select>
+    <delete id="deleteCollect">
+        delete from collect
+        where user_id = #{userId} and good_id = #{goodId}
+    </delete>
+</mapper>

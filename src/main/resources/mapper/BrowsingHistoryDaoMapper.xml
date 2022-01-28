@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.computer.dao.BrowsingHistoryDao">
+    <sql id="browsingHistoryAllColumns">
+        id,user_id,good_id,update_time,create_time,delete_status
+    </sql>
+    
+    <insert id="saveBrowsingHistory">
+        insert into history(user_id,good_id,update_time,create_time) values (#{userId},#{goodId},#{updateTime},#{createTime})
+    </insert>
+    
+    <select id="listBrowsingHistoryByUserId" resultType="com.computer.bean.History">
+        select distinct user_id,good_id
+        from history
+        where user_id = #{userId}
+    </select>
+
+    <select id="listBrowsingHistory" resultType="com.computer.bean.History">
+        select distinct user_id,good_id
+        from history
+    </select>
+    
+    <select id="listBrowsingHistoryId" resultType="com.computer.bean.History">
+        select <include refid="browsingHistoryAllColumns"/>
+        from history
+        where user_id = #{userId} and good_id = #{goodId}
+    </select>
+
+    <delete id="deleteBrowsingHistory">
+        delete from history
+        where id = #{id}
+    </delete>
+</mapper>

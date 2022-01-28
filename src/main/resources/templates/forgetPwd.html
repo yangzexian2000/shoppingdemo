@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../static/css/common.css" rel="stylesheet" type="text/css" />
+<link href="../static/fonts/iconfont.css"  rel="stylesheet" type="text/css" />
+<link href="../static/css/style.css" rel="stylesheet" type="text/css" />
+<link href="../static/css/Orders.css" rel="stylesheet" type="text/css" />
+<link href="../static/css/purebox-metro.css" rel="stylesheet" id="skin">
+<link type="text/css" rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+
+<script src="../static/js/jquery.min.1.8.2.js" type="text/javascript"></script>
+<script src="../static/js/jquery.reveal.js" type="text/javascript"></script>
+<script src="../static/js/jquery.SuperSlide.2.1.1.js" type="text/javascript"></script>
+<script src="../static/js/common_js.js" type="text/javascript"></script>
+<script src="../static/js/footer.js" type="text/javascript"></script>
+<script type="text/javascript" src="../static/jquery-3.5.1/jquery-3.5.1.js"></script>
+<script src="../static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+<title>忘记密码页</title>
+</head>
+
+<body>
+<div class="Reg_log_style">
+ <div class="logo"><a href="#"><img src="../static/images/logo.png" /></a></div>
+ <div class="login_style">
+ <div class="left_img"><img src="../static/images/bg_name_03.png" /></div>
+ <div class="right_img"><img src="../static/images/bg_name_05.png" /></div>
+    <form id="myform" class="sign_area" >
+    <div class="title_name"><span>找回密码</span></div>
+    <div class="login_m_1">
+     <div class="add_login">
+  <ul>
+      <li class="frame_style">
+          <label class="password_icon" style="opacity: 0.1"></label>
+          <img src="../static/images/phone.jpg" style="height: 30px;position: absolute;left: 10px;" />
+          <input name="userPhone" type="text"  id="userPhone"style="border-left: 1px solid;" placeholder= "请输入手机号"/>
+          <p id="erro2"style="color: red;line-height: 2;" class="hide">请输入正确的手机号</p>
+      </li>
+      <li class="frame_style">
+          <label class="user_icon" style="opacity: 0.1"></label>
+          <img src="../static/images/checkNum.jpg" style="height: 30px;position: absolute;left: 10px;" />
+          <input name="code" type="text"   id="code" width="10px" style="border-left: 1px solid;" placeholder= "请输入验证码"/>
+          <input type="button" id="getnum" style="position: absolute;left: 345px;top: 0px;width: 100px;text-align: center;height: 40px;line-height: 20px;" value="获取验证码"> </input>
+          <p id="erro6"style="color: red;line-height: 2;" class="hide">请输入四位验证码</p>
+      </li>
+      <li class="frame_style">
+          <label class="user_icon" style="opacity: 0.1"></label>
+          <img src="../static/images/pwd.jpg" style="height: 30px;position: absolute;left: 10px;" />
+          <input name="userPwd" id="userPwd" type="password"  style="border-left: 1px solid;"  class="ywz_zhuce_kuangwenzi1 text_Password" placeholder="6-16位，由字母（区分大小写）、数字、符号组成"/>
+          <p id="erro5"style="color: red;line-height: 2;" class="hide">请输入密码长度过短</p>
+          <p id="erro7"style="color: red;line-height: 2;" class="hide">请输入密码长度过长</p>
+      </li>
+      <li class="frame_style">
+          <label class="user_icon" style="opacity: 0.1"></label>
+          <img src="../static/images/pwd.jpg" style="height: 30px;position: absolute;left: 10px;" />
+          <input name="password2" id="pwd2" type="password"  style="border-left: 1px solid;" placeholder= "确认密码"/>
+      </li>
+
+  </ul>
+ 
+  <div class="auto_login clearfix">
+
+      <div>
+          <a href="#" target="_blank" class="forget_pswd" tabindex="-1" id="login">返回首页</a>
+      </div>
+
+      <div>
+          <a href="#" target="_blank"   style="position: absolute;left: 0; color: gray"  id="register">注册账号</a>
+      </div>
+ </div>
+         <!--其他登录方式-->
+         <div class="Login_Method">
+             <div class="title"><span>欢迎来到扶贫商城</span></div>
+             <div>
+             </div>
+         </div>
+  <div class="center clearfix" ><a class="btn_pink" id="btn_signin" href="javascript:void(0)" style="cursor: pointer">立即找回</a></div>
+  </div>
+    </div>
+    </form>
+
+ </div> 
+ </div>
+ </div>
+ <div class="btmbg">
+    <div class="btm">
+        备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2021-2022 商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br>
+
+    </div>    	
+</div>
+
+<script  th:inline="javascript">
+    var wait=60;
+    function time(o) {
+        var phone = $("#userPhone").val();
+        var param = /^1[34578]\d{9}$/;
+        //对手机进行正则
+        if (!param.test(phone)) {
+            $("#erro2").removeClass("hide");
+            flag1 = false;
+        }else{
+            $("#erro2").addClass("hide");
+            flag1 = true;
+        }
+        if(phone != '' && param.test(phone)){
+            if (wait == 0) {
+                o.removeAttribute("disabled");
+                o.value="获取验证码";
+                wait = 60;
+            } else {
+                o.setAttribute("disabled", true);
+                o.value="重新发送(" + wait + ")";
+                wait--;
+                setTimeout(function() {
+                        time(o)
+                    },
+                    1000)
+            }
+        }else{
+            alert("请输入正确的电话号码")
+        }
+    }
+    $("#getnum").click(function (){time(this)})
+
+    //发送验证码
+    $("#getnum").click(function(){
+        var userPhone = $("#userPhone").val();
+        var param = /^1[34578]\d{9}$/;
+        if(userPhone!=null && param.test(userPhone)){
+            $.ajax({
+                url: '/user/getcode',
+                type: 'post',
+                dataType: 'json',
+                async: true,
+                data: {userPhone: userPhone},
+                success: function (data) {
+                    if (data == '1') {
+                        alert("验证码发送失败,手机号不存在")
+                    } else if(data == "2"){
+                        alert("验证码发送成功")
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+    });
+
+    $("#register").click(function (){
+        location.href = "http://localhost:8080/user/registered"
+    })
+    $("#login").click(function (){
+        location.href = "http://localhost:8080/user/login"
+    })
+
+    $("#btn_signin").click(function (){
+        var userPwd = $("#userPwd").val()
+        var flag = false
+        if(userPwd.length < 6){
+            $("#erro5").removeClass("hide");
+            $("#erro7").addClass("hide");
+            flag = false
+        }else if(userPwd.length > 16){
+            $("#erro7").removeClass("hide");
+            $("#erro5").addClass("hide");
+            flag = false
+        }else{
+            $("#erro5").addClass("hide");
+            $("#erro7").addClass("hide");
+            flag = true
+        }
+        var checkPwd = $("#pwd2").val()
+        var checkPwdFlag = true
+        if(userPwd != checkPwd){
+            alert("两次密码不相同")
+            checkPwdFlag = false
+        }else{
+            checkPwdFlag = true
+        }
+        var userPhone = $("#userPhone").val();
+        var param = /^1[34578]\d{9}$/;
+        var phoneFlag = false;
+        if (!param.test(userPhone)) {
+            phoneFlag = false
+            $("#erro2").removeClass("hide");
+        }else{
+            phoneFlag = true
+            $("#erro2").addClass("hide");
+        }
+        var code = $("#code").val()
+        var codeFlag = false;
+        if(code.length != 4){
+            codeFlag = false
+            $("#erro6").removeClass("hide")
+        }else{
+            codeFlag = true
+            $("#erro6").addClass("hide")
+        }
+        if( flag && checkPwdFlag && phoneFlag && codeFlag ){
+            $.ajax({
+                url: '/user/forgetPassword',
+                type: 'post',
+                dataType: 'json',
+                async: true,
+                data: {userPwd:userPwd,userPhone:userPhone,code:code},
+                success: function (data) {
+                    if (data == '1') {
+                        alert("验证码错误")
+                    } else if(data== '2') {
+                        alert("找回密码成功,正在跳转登录界面")
+                        location.href = "http://localhost:8080/user/login"
+                    }
+                },
+                error: function () {
+                }
+            });
+        }
+    })
+
+
+</script>
+</body>
+</html>

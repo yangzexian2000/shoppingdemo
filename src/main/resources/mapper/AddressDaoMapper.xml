@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.computer.dao.AddressDao">
+    <sql id="addressAllColumns">
+        id,user_id,address,address_detail,accept_name,accept_phone,fix_phone,creat_time,update_time,delete_status,code
+    </sql>
+    <insert id="saveAddress">
+        insert into address(user_id,address,address_detail,accept_name,accept_phone,fix_phone,creat_time,update_time,code)
+        values (#{userId},#{address},#{addressDetail},#{acceptName},#{acceptPhone},#{fixPhone},#{createTime},#{updateTime},#{code})
+    </insert>
+
+    <select id="listAddressWithUserId" resultType="com.computer.bean.Address">
+        select <include refid="addressAllColumns"/>
+        from address
+        where user_id = #{userId}
+    </select>
+
+    <delete id="deleteAddress">
+        delete from address where id = #{addressId}
+    </delete>
+
+    <update id="updateAddressByAddressId">
+        update address set address = #{address},address_detail = #{addressDetail},accept_name = #{acceptName},
+                         accept_phone = #{acceptPhone},fix_phone = #{fixPhone},update_time = #{updateTime},code = #{code}
+        where  id = #{userId}
+    </update>
+</mapper>

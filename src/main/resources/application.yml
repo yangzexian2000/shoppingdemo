@@ -1,0 +1,5 @@
+#配置mybatis的规则
+mybatis:
+  #这是指定映射的mapper.xml的位置
+  configLocation: classpath:mybatis-config.xml
+  mapper-locations: classpath:mapper/*Mapper.xml

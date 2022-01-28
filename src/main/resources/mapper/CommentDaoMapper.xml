@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.computer.dao.CommentDao">
+    <sql id="commentAllColumns">
+        id,user_id,goods_id,detail,update_time,create_time,delete_status,satisfied
+    </sql>
+    <insert id="saveComment">
+        insert into comment(user_id,goods_id,detail,update_time,create_time,satisfied)
+        values (#{userId},#{goodsId},#{detail},#{updateTime},#{createTime},#{satisfied})
+    </insert>
+    <select id="listCommentByGoodsId" resultType="com.computer.bean.Comment">
+        select comment.detail,comment.satisfied,comment.create_time,user.user_name
+        from  user,comment
+        where comment.user_id = user.user_Id and comment.goods_id = #{goodsId}
+    </select>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.computer.dao.GoodsDao">
+    <sql id="goodsAllColumns">
+        id,goods_name,goods_price,goods_photo,goods_amount,goods_details,goods_type,goods_address,goods_saleNum,create_time,update_time,delete_status,goods_collect
+    </sql>
+    <select id="listGoodses" resultType="com.computer.bean.Goods">
+        select  <include refid="goodsAllColumns"/>
+        from goods ORDER BY goods.goods_type
+    </select>
+
+    <select id="getGoodsByGid" resultType="com.computer.bean.Goods">
+        select <include refid="goodsAllColumns"/>
+        from goods
+        where id = ${goodId}
+    </select>
+
+    <update id="updateGoodsCollect">
+        update goods set goods_collect = #{goodsCollect},update_time = #{updateTime}
+        where id = #{id}
+    </update>
+    
+    <select id="listGoodsOrderBySaleNum" resultType="com.computer.bean.Goods">
+        SELECT <include refid="goodsAllColumns"/>
+        from goods
+        <where>
+            <if test="goodsName != null">
+                goods_name  like  concat('%',#{goodsName},'%')
+            </if>
+        </where>
+        ORDER BY
+        goods_saleNum  DESC
+    </select>
+
+    <select id="listGoodsOrderByPrice" resultType="com.computer.bean.Goods">
+        SELECT <include refid="goodsAllColumns"/>
+        from goods
+        <where>
+            <if test="goodsName != null">
+                goods_name  like  concat('%',#{goodsName},'%')
+            </if>
+        </where>
+        ORDER BY
+        goods_price  DESC
+    </select>
+
+    <select id="listGoodsByLimit" resultType="com.computer.bean.Goods">
+        SELECT <include refid="goodsAllColumns"/>
+        from goods
+        where  goods_name  like  concat('%',#{goodsName},'%')
+    </select>
+
+    <select id="listGoodsSaleMoneyByAll" resultType="com.computer.bean.Goods">
+        select <include refid="goodsAllColumns"/>
+        from goods
+        where goods_name  like  concat('%',#{goodsName},'%')
+        and   goods_price between #{begin} and #{end}
+    </select>
+    <select id="listGoodsSaleMoneyByPriceOrSaleNum" resultType="com.computer.bean.Goods">
+        select <include refid="goodsAllColumns"/>
+        from goods
+        where goods_name  like  concat('%',#{goodsName},'%')
+        and   goods_price between #{begin} and #{end}
+        <if test="limit == 'saleNum'">
+            ORDER BY
+            goods_saleNum  DESC
+        </if>
+        <if test="limit == 'price'">
+            ORDER BY
+            goods_price  DESC
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.computer.dao.OrderDao">
+    <sql id="orderAllColumns">
+        id,user_id,car_ids,out_trade_no,total_amount,subject,body,order_state,pay_state,create_time,update_time,delete_status,paystyle,sendstyle,send_status
+    </sql>
+    <resultMap id="dp" type="com.computer.bean.Order">
+        <result column="id" property="id"></result>
+        <result column="user_id" property="userId"></result>
+        <result column="car_ids" property="carIds"></result>
+        <result column="out_trade_no" property="out_trade_no"></result>
+        <result column="total_amount" property="total_amount"></result>
+        <result column="subject" property="subject"></result>
+        <result column="body" property="body"></result>
+        <result column="order_state" property="orderState"></result>
+        <result column="pay_state" property="payState"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+        <result column="delete_status" property="deleteStatus"></result>
+        <result column="paystyle" property="payStyle"></result>
+        <result column="sendstyle" property="sendStyle"></result>
+        <result column="send_status" property="sendStatus"></result>
+    </resultMap>
+    <resultMap id="op" type="com.computer.bean.OrderLink">
+        <result column="id" property="id"></result>
+        <result column="out_trade_no" property="out_trade_no"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="send_status" property="sendStatus"></result>
+        <result column="total_amount" property="total_amount"></result>
+        <result column="goods_id" property="goodsId"></result>
+        <result column="goods_num" property="goodsNum"></result>
+        <result column="goods_name" property="goodsName"></result>
+        <result column="goods_price" property="goodsPrice"></result>
+        <result column="goods_details" property="goodsDetails"></result>
+    </resultMap>
+    <insert id="saveOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into payfor(user_id,car_ids,out_trade_no,total_amount,subject,body,create_time,update_time,paystyle,sendstyle)
+        values (#{userId},#{carIds},#{out_trade_no},#{total_amount},#{subject},#{body},#{createTime},#{updateTime},#{payStyle},#{sendStyle})
+    </insert>
+    <update id="updateOrder">
+        update payfor set order_state =#{orderState},pay_state = #{payState},update_time= #{updateTime}
+        where id = #{id}
+    </update>
+
+    <select id="listUserOrder" resultMap="op">
+        select payfor.out_trade_no as out_trade_no,payfor.create_time,payfor.send_status,payfor.total_amount as total_amount ,payfor.id,
+               shoppingcar.goods_id,shoppingcar.goods_num,
+               goods.goods_name,goods.goods_price,goods.goods_details
+        from payfor,shoppingcar,goods
+        where payfor.user_id = #{order.userId} and goods.id = shoppingcar.goods_id and payfor.out_trade_no = #{order.out_trade_no}
+        and shoppingcar.id in
+        <foreach collection="carIdArray" item="carId" open="(" separator="," close=")">
+            #{carId}
+        </foreach>
+    </select>
+    <select id="getUserOrderByOid" resultMap="dp">
+        select <include refid="orderAllColumns"/>
+        from payfor
+        where id = #{id}
+    </select>
+    <select id="listUserOrderByUserId" resultMap="dp">
+        select <include refid="orderAllColumns"/>
+        from payfor
+        where user_id = #{userId}
+    </select>
+
+    <update id="updateOrderSendStatus">
+        update payfor set send_status = #{sendStatus}
+        where id  = #{ordId}
+    </update>
+    <delete id="deleteOrderByOrdId">
+        delete from payfor where id = #{ordId}
+    </delete>
+</mapper>
